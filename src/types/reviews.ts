@@ -12,5 +12,11 @@ type User = {
   isPro: boolean;
 }
 
+type FormData = {
+  offerId: string;
+  comment: string;
+  rating:number;
+}
+
 type Reviews = Review[];
-export type {Review,Reviews};
+export type {Review,Reviews,FormData};

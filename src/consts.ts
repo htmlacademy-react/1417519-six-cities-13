@@ -7,6 +7,13 @@ export enum AppRoute {
   Offer = '/offer'
 }
 
+export const RequestStatus = {
+  IDLE: 'Idle',
+  PENDING: 'Pending',
+  SUCCESS: 'Success',
+  ERROR: 'Error',
+} as const;
+
 export enum APIRoute {
   Offers = '/offers',
   NearPlaces = '/nearby',

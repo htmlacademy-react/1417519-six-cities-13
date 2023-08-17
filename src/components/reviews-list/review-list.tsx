@@ -1,20 +1,15 @@
-import { FullOffer } from '../../types/offer';
 import moment from 'moment';
 import { Reviews } from '../../types/reviews';
-import { useAppSelector } from '../hooks/use-select';
 
-type ReviewsListScreenProps = {
-  actualOffer: FullOffer;
+type ReviewsScreenProps = {
+  reviews: Reviews;
 }
 
+function ReviewsList ({reviews}:ReviewsScreenProps):JSX.Element{
 
-function ReviewsList ({actualOffer}: ReviewsListScreenProps):JSX.Element{
-  const reviews = actualOffer.reviews;
-  const avalibleReviews = useAppSelector((state)=> state.rewiews);
-  const actualReview = reviews.map((reviewId) => avalibleReviews.find((review)=>review.id === reviewId)) as Reviews;
   return (
     <ul className="reviews__list">
-      {actualReview.map((review) => (
+      {reviews.map((review) => (
         <li className="reviews__item" key={review.id}>
           <div className="reviews__user user">
             <div className="reviews__avatar-wrapper user__avatar-wrapper">

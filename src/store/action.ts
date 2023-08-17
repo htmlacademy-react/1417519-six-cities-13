@@ -25,6 +25,14 @@ export const requireAuthorization = createAction<AuthorizationStatus>('user/requ
 
 export const setOffersDataLoadingStatus = createAction<boolean>('data/setQuestionsDataLoadingStatus');
 
+export const setOfferDataLoadingStatus = createAction<boolean>('data/setQuestionDataLoadingStatus');
+
+export const setNearOffersDataLoadingStatus = createAction<boolean>('data/setNearOffersDataLoadingStatus');
+
+export const setReviewsDataLoadingStatus = createAction<boolean>('data/setReviewsDataLoadingStatus');
+
 export const redirectToRoute = createAction<AppRoute>('main/redirectToRoute');
 
 export const setAuthData = createAction('USER/setUserInfo', (userInfo: UserData | null) => ({payload: userInfo}));
+
+export const setNewReviewsDataLoadingStatus = createAction<boolean>('data/setNewReviewsDataLoadingStatus');

@@ -1,18 +1,18 @@
-import { FullOffer } from '../../types/offer';
+import { useAppSelector } from '../hooks/use-select';
 import ReviewForm from '../review-form/review-form';
 import ReviewsList from '../reviews-list/review-list';
 
-type ReviewsScreenProps = {
-  actualOffer: FullOffer;
-}
+function Reviews ():JSX.Element {
 
-function Reviews ({actualOffer}: ReviewsScreenProps):JSX.Element {
+  const reviews = useAppSelector((state) => state.rewiews);
+
+
   return (
     <section className="offer__reviews reviews">
       <h2 className="reviews__title">
-  Reviews · <span className="reviews__amount">{actualOffer.reviews.length}</span>
+  Reviews · <span className="reviews__amount">{reviews.length}</span>
       </h2>
-      <ReviewsList actualOffer = {actualOffer}/>
+      <ReviewsList reviews={reviews}/>
       <ReviewForm />
     </section>
   );

@@ -21,14 +21,14 @@ function Cities ():JSX.Element {
 
   const activeCity = useAppSelector((state)=> state.currentCity);
   const rentingOffers = useAppSelector((state)=> state.offers);
-  const actualOffer = rentingOffers.filter((offer)=> offer.city.name === activeCity);
+  const actualOffers = rentingOffers.filter((offer)=> offer.city.name === activeCity);
 
   const handleListItemHover = (listItemName: string) => {
-    const currentPoint = actualOffer.find((point) => point.id === listItemName);
+    const currentPoint = actualOffers.find((point) => point.id === listItemName);
     setSelectedPoint(currentPoint);
   };
   const handleListItemUnHover = (listItemName: string) => {
-    const currentPoint = actualOffer.find((point) => point.id === listItemName);
+    const currentPoint = actualOffers.find((point) => point.id === listItemName);
     if(currentPoint){
       setSelectedPoint(undefined);
     }
@@ -39,14 +39,14 @@ function Cities ():JSX.Element {
       <div className="cities__places-container container">
         <section className="cities__places places">
           <h2 className="visually-hidden">Places</h2>
-          <b className="places__found">{actualOffer.length} places to stay in {activeCity}</b>
+          <b className="places__found">{actualOffers.length} places to stay in {activeCity}</b>
           <Sorting
             activeSorting = {activeSorting}
             onChange = {(newSorting) => setActiveSorting(newSorting)}
           />
           <PlacesList
             activeSorting = {activeSorting}
-            rentingOffers = {actualOffer}
+            rentingOffers = {actualOffers}
             onListItemHover={handleListItemHover}
             onListItemUnHover={handleListItemUnHover}
             classesForPlacesList={classesForPlacesList}
@@ -54,7 +54,7 @@ function Cities ():JSX.Element {
         </section>
         <div className="cities__right-section">
           <Map
-            points={actualOffer}
+            points={actualOffers}
             selectedPoint={selectedPoint}
             mapType = {classesForPlacesList.mapType}
           />
