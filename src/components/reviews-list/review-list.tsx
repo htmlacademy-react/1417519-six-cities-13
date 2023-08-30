@@ -1,15 +1,18 @@
 import moment from 'moment';
 import { Reviews } from '../../types/reviews';
+import { useAppSelector } from '../hooks/use-select';
+import { getReviews } from '../../store/reviews/reviews-selectors';
+import { sortTimeReviews } from '../../utils/utils';
 
-type ReviewsScreenProps = {
-  reviews: Reviews;
-}
 
-function ReviewsList ({reviews}:ReviewsScreenProps):JSX.Element{
+function ReviewsList ():JSX.Element{
+
+  const reviews = useAppSelector(getReviews);
+  const lastReviews = reviews && sortTimeReviews([...reviews]).slice(0, 10) as Reviews;
 
   return (
     <ul className="reviews__list">
-      {reviews.map((review) => (
+      {lastReviews.map((review) => (
         <li className="reviews__item" key={review.id}>
           <div className="reviews__user user">
             <div className="reviews__avatar-wrapper user__avatar-wrapper">

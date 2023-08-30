@@ -61,9 +61,8 @@ function PlacesListItem ({offer,onListItemHover,onListItemUnHover,classesForPlac
     >
       {offer.isPremium && <PremiumMark/>}
       <div className={cn(imageWrapper,'place-card__image-wrapper')}>
-        <a
-
-          href="#"
+        <Link
+          to={`/offer/${offer.id}`}
         >
           <img
             className="place-card__image"
@@ -72,7 +71,7 @@ function PlacesListItem ({offer,onListItemHover,onListItemUnHover,classesForPlac
             height={200}
             alt="Place image"
           />
-        </a>
+        </Link>
       </div>
       <div className="place-card__info">
         <div className="place-card__price-wrapper">

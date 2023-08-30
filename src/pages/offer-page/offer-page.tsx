@@ -10,7 +10,7 @@ import { Offer } from '../../types/offer';
 import { useEffect, useState } from 'react';
 import NearPlaces from '../../components/near-palces/near-places';
 import { useAppSelector } from '../../components/hooks/use-select';
-import { changeFavStatus, fetchNeigbourhoodOffersAction, fetchOfferAction, fetchReviewsAction } from '../../store/api-actions';
+import { changeFavStatus, fetchNeigbourhoodOffersAction, fetchOfferAction } from '../../store/api-actions';
 import { useAppDispatch } from '../../components/hooks/use-dispatch';
 import { redirectToRoute } from '../../store/action';
 import LoadingScreen from '../../components/loading-screen/loading-screen';
@@ -68,7 +68,6 @@ function OfferPage(): JSX.Element {
     if (offerId) {
       dispatch(fetchOfferAction(offerId));
       dispatch(fetchNeigbourhoodOffersAction(offerId));
-      dispatch(fetchReviewsAction(offerId));
     }
     return () => {
       dispatch(dropOffer());

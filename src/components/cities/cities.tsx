@@ -3,7 +3,7 @@ import Map from '../../components/map/map';
 import { Offer } from '../../types/offer';
 import { useCallback, useState } from 'react';
 import { useAppSelector } from '../../components/hooks/use-select';
-import Sorting from '../places-sorting-form/sorting';
+import Sorting from '../places-sorting-form/places-sorting-form';
 import { getCurrentCity, getOffers } from '../../store/offers-data/offers-selectors';
 
 function Cities ():JSX.Element {

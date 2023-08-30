@@ -65,7 +65,7 @@ function HeaderNav () {
               } }
               to={AppRoute.Login}
             >
-              <span className="header__signout">Sign out</span>
+              <span className="header__signout">Log Out</span>
             </Link>
           </li>
         </ul>

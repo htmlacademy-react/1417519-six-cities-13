@@ -2,19 +2,20 @@ import { ChangeEvent } from 'react';
 
 type ReviewFormRatingProp = {
   handleRatingChange:(evt: ChangeEvent<HTMLInputElement>) => void;
+  reviewDataRating: number;
 }
 
-function ReviewFormRating ({handleRatingChange}:ReviewFormRatingProp):JSX.Element{
+function ReviewFormRating ({handleRatingChange,reviewDataRating}:ReviewFormRatingProp):JSX.Element{
   return (
-    <div className="reviews__rating-form form__rating"
-      onChange={handleRatingChange}
-    >
+    <div className="reviews__rating-form form__rating">
       <input
         className="form__rating-input visually-hidden"
         name="rating"
         defaultValue={5}
         id="5-stars"
         type="radio"
+        checked={reviewDataRating === 5}
+        onChange={(evt) => handleRatingChange(evt)}
       />
       <label
         htmlFor="5-stars"
@@ -31,6 +32,9 @@ function ReviewFormRating ({handleRatingChange}:ReviewFormRatingProp):JSX.Elemen
         defaultValue={4}
         id="4-stars"
         type="radio"
+        checked={reviewDataRating === 4}
+        onChange={handleRatingChange}
+
       />
       <label
         htmlFor="4-stars"
@@ -47,6 +51,9 @@ function ReviewFormRating ({handleRatingChange}:ReviewFormRatingProp):JSX.Elemen
         defaultValue={3}
         id="3-stars"
         type="radio"
+        checked={reviewDataRating === 3}
+        onChange={handleRatingChange}
+
       />
       <label
         htmlFor="3-stars"
@@ -63,6 +70,9 @@ function ReviewFormRating ({handleRatingChange}:ReviewFormRatingProp):JSX.Elemen
         defaultValue={2}
         id="2-stars"
         type="radio"
+        checked={reviewDataRating === 2}
+        onChange={handleRatingChange}
+
       />
       <label
         htmlFor="2-stars"
@@ -79,6 +89,8 @@ function ReviewFormRating ({handleRatingChange}:ReviewFormRatingProp):JSX.Elemen
         defaultValue={1}
         id="1-star"
         type="radio"
+        checked={reviewDataRating === 1}
+        onChange={handleRatingChange}
       />
       <label
         htmlFor="1-star"

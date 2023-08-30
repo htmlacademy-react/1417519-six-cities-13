@@ -39,8 +39,10 @@ function ReviewForm ():JSX.Element{
 
 
   const handleRatingChange = (evt: ChangeEvent<HTMLInputElement>) => {
-    const {name, value} = evt.target;
-    setFormData({...formData,[name]:value});
+    setFormData({
+      ...formData,
+      rating: Number(evt.target.value),
+    });
   };
 
   const handleSubmitClick = (evt: FormEvent<HTMLFormElement>) => {
@@ -68,6 +70,7 @@ function ReviewForm ():JSX.Element{
 
   const isFormValid = formData.comment.length < 49 || formData.comment.length > 299 || formData.rating === 0;
 
+
   return (
     <>
       {authorizationStatus !== AuthorizationStatus.Auth && (<div></div>)}
@@ -83,6 +86,7 @@ function ReviewForm ():JSX.Element{
           </label>
           <ReviewFormRating
             handleRatingChange={handleRatingChange}
+            reviewDataRating={formData.rating}
           />
           <textarea
             className="reviews__textarea form__textarea"

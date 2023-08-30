@@ -23,7 +23,8 @@ export const createAPI = ():AxiosInstance => {
   const api = axios.create({
     baseURL: BACKEND_URL,
     timeout: REQUEST_TIMEOUT,
-  });
+  }
+  );
 
   api.interceptors.request.use(
     (config:AxiosRequestConfig) => {
@@ -42,7 +43,8 @@ export const createAPI = ():AxiosInstance => {
       if (error.response && shouldDisplayError(error.response)) {
         const detailMessage = (error.response.data);
 
-        toast.warn(detailMessage.message);
+        toast.warn(detailMessage.message,{
+          toastId: detailMessage.message ,});
       }
 
       throw error;
