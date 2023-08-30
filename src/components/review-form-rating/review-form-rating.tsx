@@ -33,8 +33,7 @@ function ReviewFormRating ({handleRatingChange,reviewDataRating}:ReviewFormRatin
         id="4-stars"
         type="radio"
         checked={reviewDataRating === 4}
-        onChange={handleRatingChange}
-
+        onChange={(evt) => handleRatingChange(evt)}
       />
       <label
         htmlFor="4-stars"
@@ -52,7 +51,7 @@ function ReviewFormRating ({handleRatingChange,reviewDataRating}:ReviewFormRatin
         id="3-stars"
         type="radio"
         checked={reviewDataRating === 3}
-        onChange={handleRatingChange}
+        onChange={(evt) => handleRatingChange(evt)}
 
       />
       <label
@@ -71,7 +70,7 @@ function ReviewFormRating ({handleRatingChange,reviewDataRating}:ReviewFormRatin
         id="2-stars"
         type="radio"
         checked={reviewDataRating === 2}
-        onChange={handleRatingChange}
+        onChange={(evt) => handleRatingChange(evt)}
 
       />
       <label
@@ -90,7 +89,7 @@ function ReviewFormRating ({handleRatingChange,reviewDataRating}:ReviewFormRatin
         id="1-star"
         type="radio"
         checked={reviewDataRating === 1}
-        onChange={handleRatingChange}
+        onChange={(evt) => handleRatingChange(evt)}
       />
       <label
         htmlFor="1-star"
