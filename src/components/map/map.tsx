@@ -7,6 +7,7 @@ import { CITYES, URL_MARKER_CURRENT, URL_MARKER_DEFAULT } from '../../consts';
 import { City, Offer, Offers } from '../../types/offer';
 import cn from 'classnames';
 import { useAppSelector } from '../hooks/use-select';
+import { getCurrentCity } from '../../store/offers-data/offers-selectors';
 
 
 type MapScreenProps = {
@@ -28,10 +29,11 @@ const currentCustomIcon = leaflet.icon({
 
 
 function Map({points,selectedPoint,mapType}:MapScreenProps) {
-  const actualCity = useAppSelector((state) => state.currentCity);
+  const actualCity = useAppSelector(getCurrentCity);
   const city = CITYES.find((cityes) => cityes.name === actualCity) as City;
   const mapRef = useRef(null);
   const map = useMap({mapRef, city});
+
   const [currentCity, setCurrentCity] = useState(city);
 
   useEffect(()=>{

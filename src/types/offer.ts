@@ -53,4 +53,11 @@ type FullOffer = {
 
 type FullOffers = FullOffer[]
 
-export type {Offers,Offer,FullOffers,FullOffer,Host,City,Cityes};
+type FavoritesStatusData = {
+  offerId: string;
+  isFavorite: boolean;
+}
+
+type OfferWithHost = Offer & Host;
+
+export type {Offers,Offer,FullOffers,FullOffer,Host,City,Cityes,FavoritesStatusData,OfferWithHost};

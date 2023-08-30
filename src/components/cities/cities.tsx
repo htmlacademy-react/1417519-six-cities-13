@@ -1,9 +1,10 @@
 import PlacesList from '../../components/places-list/places-list';
 import Map from '../../components/map/map';
 import { Offer } from '../../types/offer';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useAppSelector } from '../../components/hooks/use-select';
 import Sorting from '../places-sorting-form/sorting';
+import { getCurrentCity, getOffers } from '../../store/offers-data/offers-selectors';
 
 function Cities ():JSX.Element {
   const [activeSorting,setActiveSorting] = useState('Popular');
@@ -13,26 +14,30 @@ function Cities ():JSX.Element {
 
   const classesForPlacesList = {
     mapType:'cities__map',
-    placesListType: 'cities__places-list  tabs__content',
+    placesListType: 'cities__places-list tabs__content',
     placesCardType: 'cities__card',
     imageWrapper:'cities__image-wrapper',
   };
 
 
-  const activeCity = useAppSelector((state)=> state.currentCity);
-  const rentingOffers = useAppSelector((state)=> state.offers);
+  const activeCity = useAppSelector(getCurrentCity);
+  const rentingOffers = useAppSelector(getOffers);
   const actualOffers = rentingOffers.filter((offer)=> offer.city.name === activeCity);
 
-  const handleListItemHover = (listItemName: string) => {
+  const handleListItemHover = useCallback((listItemName: string) => {
     const currentPoint = actualOffers.find((point) => point.id === listItemName);
     setSelectedPoint(currentPoint);
-  };
-  const handleListItemUnHover = (listItemName: string) => {
+  },[actualOffers]);
+
+  const handleListItemUnHover = useCallback((listItemName: string) => {
     const currentPoint = actualOffers.find((point) => point.id === listItemName);
     if(currentPoint){
       setSelectedPoint(undefined);
     }
-  };
+  },[actualOffers]);
+
+  const newSortingChange = useCallback((newSorting:string) => setActiveSorting(newSorting),[]);
+
 
   return (
     <div className="cities">
@@ -42,7 +47,7 @@ function Cities ():JSX.Element {
           <b className="places__found">{actualOffers.length} places to stay in {activeCity}</b>
           <Sorting
             activeSorting = {activeSorting}
-            onChange = {(newSorting) => setActiveSorting(newSorting)}
+            onChange = {newSortingChange}
           />
           <PlacesList
             activeSorting = {activeSorting}

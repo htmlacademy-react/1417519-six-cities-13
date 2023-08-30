@@ -2,6 +2,7 @@ import { useState,KeyboardEvent } from 'react';
 import cn from 'classnames';
 import { TSorting } from '../../types/sorting';
 import { SortingMap } from '../../consts';
+import { memo } from 'react';
 
 type SortingProps = {
   activeSorting: string;
@@ -69,4 +70,5 @@ function Sorting ({activeSorting, onChange}: SortingProps){
   );
 }
 
-export default Sorting;
+
+export default memo(Sorting);

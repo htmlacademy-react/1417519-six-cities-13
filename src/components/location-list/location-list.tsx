@@ -3,16 +3,18 @@ import { MouseEvent } from 'react';
 import { Link } from 'react-router-dom';
 import { useAppSelector } from '../hooks/use-select';
 import { useAppDispatch } from '../hooks/use-dispatch';
-import { changeCity } from '../../store/action';
 import classNames from 'classnames';
+import { getCurrentCity } from '../../store/offers-data/offers-selectors';
+import { setActiveCity } from '../../store/offers-data/offers-data';
 
 function LocationList () {
-  const currentCity = useAppSelector((state) => state.currentCity);
   const dispatch = useAppDispatch();
+  const currentCity = useAppSelector(getCurrentCity);
+
   const handleCityClick = (evt: MouseEvent<HTMLLIElement>) => {
     evt.preventDefault();
-    const city = evt.currentTarget.dataset.city;
-    dispatch(changeCity(city));
+    const city = evt.currentTarget.dataset.city as string;
+    dispatch(setActiveCity(city));
   };
 
   return (

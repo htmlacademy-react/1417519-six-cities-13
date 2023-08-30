@@ -1,14 +1,40 @@
-import { Offer } from '../../types/offer';
+import { Link } from 'react-router-dom';
+import { AppRoute } from '../../consts';
+import { redirectToRoute } from '../../store/action';
+import { changeFavStatus } from '../../store/api-actions';
+import { FavoritesStatusData, Offer } from '../../types/offer';
+import { useAppDispatch } from '../hooks/use-dispatch';
+import { useAppSelector } from '../hooks/use-select';
 import { PremiumMark } from '../premium-mark/premium-mark';
+import {MouseEvent} from 'react';
+import { getAuthorizationStatus } from '../../store/user-process/user-selectors';
+import { updateFavoriteOffer } from '../../store/offers-data/offers-data';
+
 
 type FavoritePlaceCardScreenProps = {
   rentingOffer: Offer;
 }
 
 function FavoritePlaceCard ({rentingOffer}: FavoritePlaceCardScreenProps):JSX.Element {
+  const loginStatus = useAppSelector(getAuthorizationStatus);
+  const dispatch = useAppDispatch();
+
+  const handleBookmarkClick = (event:MouseEvent<HTMLButtonElement>) =>{
+    event.preventDefault();
+
+    if(loginStatus !== 'AUTH'){
+      dispatch(redirectToRoute(AppRoute.Login));
+    }
+
+    if(rentingOffer?.isFavorite){
+      dispatch(changeFavStatus({offerId:rentingOffer.id , isFavorite: false} as FavoritesStatusData));
+      dispatch(updateFavoriteOffer({offerId:rentingOffer.id , isFavorite: false}));
+    }
+  };
+
   return (
     <article className="favorites__card place-card">
-      {rentingOffer.isFavorite ? <PremiumMark/> : ''}
+      {rentingOffer.isPremium && <PremiumMark/>}
       <div className="favorites__image-wrapper place-card__image-wrapper">
         <a href="#">
           <img
@@ -29,7 +55,8 @@ function FavoritePlaceCard ({rentingOffer}: FavoritePlaceCardScreenProps):JSX.El
             </span>
           </div>
           <button
-            className="place-card__bookmark-button place-card__bookmark-button--active button"
+            onClick={handleBookmarkClick}
+            className= {rentingOffer.isFavorite ? 'place-card__bookmark-button place-card__bookmark-button--active button' : 'place-card__bookmark-button button'}
             type="button"
           >
             <svg
@@ -49,7 +76,12 @@ function FavoritePlaceCard ({rentingOffer}: FavoritePlaceCardScreenProps):JSX.El
           </div>
         </div>
         <h2 className="place-card__name">
-          <a href="#">{rentingOffer.title}</a>
+          <Link
+            to ={`${AppRoute.Offer}/${rentingOffer.id}`}
+          >
+            {rentingOffer.title}
+
+          </Link>
         </h2>
         <p className="place-card__type">{rentingOffer.type}</p>
       </div>

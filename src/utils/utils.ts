@@ -1,4 +1,6 @@
+import dayjs from 'dayjs';
 import { Offer } from '../types/offer';
+import { Review } from '../types/reviews';
 import { TSorting } from '../types/sorting';
 
 function sortByRating(a:Offer,b:Offer){
@@ -19,3 +21,6 @@ export const sorting:Record<TSorting, (offers:Offer[]) => Offer[]> = {
   LowToHigh: (offers:Offer[]) => offers.slice().sort(sortLowToHigh),
   TopRated: (offers:Offer[]) => offers.slice().sort(sortByRating),
 };
+
+export const sortTimeReviews = (reviews: Review[]): Review[] =>
+  reviews.sort((a, b) => dayjs(b.date).diff(dayjs(a.date)));

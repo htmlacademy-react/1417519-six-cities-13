@@ -1,8 +1,9 @@
+import { getCurrentCity } from '../../store/offers-data/offers-selectors';
 import { useAppSelector } from '../hooks/use-select';
 
 
 function CitiesEmpty ():JSX.Element {
-  const currentCity = useAppSelector((state) => state.currentCity);
+  const currentCity = useAppSelector(getCurrentCity);
   return(
     <div className="cities">
       <div className="cities__places-container cities__places-container--empty container">

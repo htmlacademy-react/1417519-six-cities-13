@@ -1,5 +1,6 @@
 import {Route, Routes} from 'react-router-dom';
-import { AppRoute,AuthorizationStatus } from '../../consts';
+import { useEffect } from 'react';
+import { AppRoute } from '../../consts';
 import { useAppSelector } from '../hooks/use-select';
 import LoadingScreen from '../loading-screen/loading-screen';
 import { HelmetProvider } from 'react-helmet-async';
@@ -12,13 +13,24 @@ import Error from '../../pages/404-page/404-page';
 import PrivateRoute from '../private-route/private-route';
 import HistoryRouter from '../history-route/history-route';
 import browserHistory from '../../browser-gistory';
+import { getAuthCheckedStatus, getAuthorizationStatus } from '../../store/user-process/user-selectors';
+import { checkAuthAction, fetchOffersAction } from '../../store/api-actions';
+import { useAppDispatch } from '../hooks/use-dispatch';
 
 
 function App (): JSX.Element{
-  const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
-  const isOffersDataLoading = useAppSelector((state) => state.isOffersDataLoading);
+  const dispatch = useAppDispatch();
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
+  const isAuthChecked = useAppSelector(getAuthCheckedStatus);
 
-  if (authorizationStatus === AuthorizationStatus.Unknown || isOffersDataLoading) {
+  useEffect(() => {
+    dispatch(fetchOffersAction());
+    if(authorizationStatus === 'AUTH'){
+      dispatch(checkAuthAction());
+    }
+  }, [dispatch,authorizationStatus]);
+
+  if (!isAuthChecked) {
     return (
       <LoadingScreen />
     );
@@ -34,7 +46,6 @@ function App (): JSX.Element{
               {<MainPage/>}
           />
           <Route
-
             path={AppRoute.Login}
             element={<LoginPage />}
           />

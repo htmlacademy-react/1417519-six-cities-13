@@ -18,5 +18,10 @@ type FormData = {
   rating:number;
 }
 
+type BookmarkData = {
+  id: string;
+  status: number;
+}
+
 type Reviews = Review[];
-export type {Review,Reviews,FormData};
+export type {Review,Reviews,FormData,BookmarkData};

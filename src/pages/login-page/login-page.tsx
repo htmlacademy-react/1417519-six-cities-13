@@ -1,7 +1,7 @@
 import {useRef, FormEvent, useState, ChangeEvent} from 'react';
 import {Navigate} from 'react-router-dom';
 import { useAppDispatch } from '../../components/hooks/use-dispatch';
-import {loginAction} from '../../store/api-actions';
+import { loginAction} from '../../store/api-actions';
 import { AppRoute, AuthorizationStatus } from '../../consts';
 import { toast } from 'react-toastify';
 import Logo from '../../components/logo/logo';
@@ -31,7 +31,6 @@ function LoginPage(): JSX.Element {
     if (loginRef.current !== null
     && passwordRef.current !== null) {
       if (!regexPassword.test(passwordRef.current.value)) {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
         toast.warn('The password must have at least one letter & one symbol without spaces');
         return;
       }
@@ -42,12 +41,11 @@ function LoginPage(): JSX.Element {
     }
   };
 
-  const hasAuthorization = useAppSelector((state) => state.authorizationStatus) === AuthorizationStatus.Auth;
+  const isAuthorization = useAppSelector((state) => state.USER.authorizationStatus) === AuthorizationStatus.Auth;
 
-  if (hasAuthorization) {
+  if (isAuthorization) {
     return <Navigate to={AppRoute.Main} />;
   }
-
 
   return (
     <div className="page page--gray page--login">

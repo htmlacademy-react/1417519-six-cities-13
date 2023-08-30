@@ -1,4 +1,4 @@
-import OfferInsideList from '../offer-inside-item/offer-inside-list';
+import OfferInsideList from '../offer-inside-list/offer-inside-list';
 
 
 type OfferInsideScreenProps = {

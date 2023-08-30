@@ -1,17 +1,18 @@
+import { getNeigborhoodOffers } from '../../store/offers-data/offers-selectors';
 import { classesFor } from '../../types/classes-for';
 import { Offers } from '../../types/offer';
+import { useAppSelector } from '../hooks/use-select';
 import PlacesList from '../places-list/places-list';
 
 type PlacesListPageScreenProps = {
-  neighbourhoodOffers: Offers;
   handleListItemHover: (listItemName: string) => void;
   handleListItemUnHover:(listItemName: string) => void;
   classesForPlacesList:classesFor;
 }
 
-function NearPlaces({neighbourhoodOffers,handleListItemHover,handleListItemUnHover,classesForPlacesList}: PlacesListPageScreenProps): JSX.Element {
-
-
+function NearPlaces({handleListItemHover,handleListItemUnHover,classesForPlacesList}: PlacesListPageScreenProps): JSX.Element {
+  const nearPlacesOffers = useAppSelector(getNeigborhoodOffers) as Offers;
+  const neighbourhoodOffers = nearPlacesOffers?.slice(0,3);
   return (
     <section className="near-places places">
       <h2 className="near-places__title">

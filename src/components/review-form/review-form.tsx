@@ -3,20 +3,22 @@ import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { useAppDispatch } from '../hooks/use-dispatch';
 import { useParams } from 'react-router-dom';
 import { useAppSelector } from '../hooks/use-select';
-import { AuthorizationStatus } from '../../consts';
+import { AuthorizationStatus, RequestStatus } from '../../consts';
 import { fetchReviewsAction, postReview } from '../../store/api-actions';
-import { setNewReviewsDataLoadingStatus } from '../../store/action';
+import { getAuthorizationStatus, getUserData } from '../../store/user-process/user-selectors';
+import { getReviewsStatusLoading } from '../../store/reviews/reviews-selectors';
+import ReviewFormRating from '../review-form-rating/review-form-rating';
 
 type TOfferReview = {
   offerId: string;
 }
 
-function ReviewForm (){
+function ReviewForm ():JSX.Element{
   const dispatch = useAppDispatch();
   const {offerId} = useParams() as TOfferReview;
-  const userData = useAppSelector((state)=> state.userData);
-  const authorizationStatus = useAppSelector((state)=> state.authorizationStatus);
-  const reload = useAppSelector((state)=> state.isNewReviewDataLoading);
+  const userData = useAppSelector(getUserData);
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
+  const reload = useAppSelector(getReviewsStatusLoading);
 
   const [formData, setFormData] = useState({
     id: '',
@@ -47,7 +49,6 @@ function ReviewForm (){
       const a = evt.target as Comment;
       a.data = JSON.stringify({...formData , offerId});
       dispatch(postReview(evt.target as Comment));
-      dispatch(setNewReviewsDataLoadingStatus(true));
     }
     setFormData({...formData,
       id: crypto.randomUUID(),
@@ -55,107 +56,34 @@ function ReviewForm (){
     });
   };
 
-  useEffect(()=>{
-    if(reload){
-      dispatch(fetchReviewsAction(offerId));
-      dispatch(setNewReviewsDataLoadingStatus(false));
-      setFormData({...formData, rating:0, comment:''});
-    }
-  },[dispatch,offerId,reload,formData]);
 
+  useEffect(() => {
+    if (reload === RequestStatus.SUCCESS) {
+      dispatch(fetchReviewsAction(offerId));
+    }
+    return ()=> {
+      setFormData({...formData, rating:0, comment:''});
+    };
+  }, [dispatch, offerId, reload]);
+
+  const isFormValid = formData.comment.length < 49 || formData.comment.length > 299 || formData.rating === 0;
 
   return (
     <>
       {authorizationStatus !== AuthorizationStatus.Auth && (<div></div>)}
       {authorizationStatus === AuthorizationStatus.Auth && (
-        <form className="reviews__form form" action="#" method="post" onSubmit={handleSubmitClick}>
+        <form
+          className="reviews__form form"
+          action="#"
+          method="post"
+          onSubmit={handleSubmitClick}
+        >
           <label className="reviews__label form__label" htmlFor="review">
     Your review
           </label>
-          <div className="reviews__rating-form form__rating"
-            onChange={handleRatingChange}
-          >
-            <input
-              className="form__rating-input visually-hidden"
-              name="rating"
-              defaultValue={5}
-              id="5-stars"
-              type="radio"
-            />
-            <label
-              htmlFor="5-stars"
-              className="reviews__rating-label form__rating-label"
-              title="perfect"
-            >
-              <svg className="form__star-image" width={37} height={33}>
-                <use xlinkHref="#icon-star" />
-              </svg>
-            </label>
-            <input
-              className="form__rating-input visually-hidden"
-              name="rating"
-              defaultValue={4}
-              id="4-stars"
-              type="radio"
-            />
-            <label
-              htmlFor="4-stars"
-              className="reviews__rating-label form__rating-label"
-              title="good"
-            >
-              <svg className="form__star-image" width={37} height={33}>
-                <use xlinkHref="#icon-star" />
-              </svg>
-            </label>
-            <input
-              className="form__rating-input visually-hidden"
-              name="rating"
-              defaultValue={3}
-              id="3-stars"
-              type="radio"
-            />
-            <label
-              htmlFor="3-stars"
-              className="reviews__rating-label form__rating-label"
-              title="not bad"
-            >
-              <svg className="form__star-image" width={37} height={33}>
-                <use xlinkHref="#icon-star" />
-              </svg>
-            </label>
-            <input
-              className="form__rating-input visually-hidden"
-              name="rating"
-              defaultValue={2}
-              id="2-stars"
-              type="radio"
-            />
-            <label
-              htmlFor="2-stars"
-              className="reviews__rating-label form__rating-label"
-              title="badly"
-            >
-              <svg className="form__star-image" width={37} height={33}>
-                <use xlinkHref="#icon-star" />
-              </svg>
-            </label>
-            <input
-              className="form__rating-input visually-hidden"
-              name="rating"
-              defaultValue={1}
-              id="1-star"
-              type="radio"
-            />
-            <label
-              htmlFor="1-star"
-              className="reviews__rating-label form__rating-label"
-              title="terribly"
-            >
-              <svg className="form__star-image" width={37} height={33}>
-                <use xlinkHref="#icon-star" />
-              </svg>
-            </label>
-          </div>
+          <ReviewFormRating
+            handleRatingChange={handleRatingChange}
+          />
           <textarea
             className="reviews__textarea form__textarea"
             onChange={handleCommentChange}
@@ -164,6 +92,7 @@ function ReviewForm (){
             value={formData.comment}
             placeholder="Tell how was your stay, what you like and what can be improved"
             minLength={50}
+            maxLength={300}
           />
           <div className="reviews__button-wrapper">
             <p className="reviews__help">
@@ -175,7 +104,7 @@ function ReviewForm (){
             <button
               className="reviews__submit form__submit button"
               type="submit"
-              disabled={formData.comment.length < 49}
+              disabled={isFormValid}
             >
       Submit
             </button>
