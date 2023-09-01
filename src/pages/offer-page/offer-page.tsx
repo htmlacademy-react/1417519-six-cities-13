@@ -95,7 +95,6 @@ function OfferPage(): JSX.Element {
     }
   };
 
-
   return (
     <>
       {offerFetchingStatus || nearOffersFetchingStatus && <LoadingScreen/>}
